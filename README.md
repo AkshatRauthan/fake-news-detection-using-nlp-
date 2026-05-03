@@ -7,6 +7,7 @@ sdk: docker
 pinned: false
 license: mit
 ---
+
 <div align="center">
   <img src="frontend/public/logo.svg" alt="FakeGuard AI Logo" width="90" />
   <h1>FakeGuard AI</h1>
@@ -115,10 +116,10 @@ Fake_New_Detection/
 
 Two classifier variants were trained on **44,898 labeled news articles** (23,481 fake + 21,417 real):
 
-| Model | Input Features | Test Accuracy | F1 (Fake) |
-|---|---|---|---|
-| **Text-Only PAC** | TF-IDF (50,000 dims) | **99.48%** | 0.9950 |
-| **Graph-Enhanced PAC** ✅ deployed | TF-IDF + 5 graph features | **95.91%** | 0.9622 |
+| Model                              | Input Features            | Test Accuracy | F1 (Fake) |
+| ---------------------------------- | ------------------------- | ------------- | --------- |
+| **Text-Only PAC**                  | TF-IDF (50,000 dims)      | **99.48%**    | 0.9950    |
+| **Graph-Enhanced PAC** ✅ deployed | TF-IDF + 5 graph features | **95.91%**    | 0.9622    |
 
 ### How the Graph-Enhanced Model Works
 
@@ -148,12 +149,12 @@ Article text
 
 ### Knowledge Graph Stats
 
-| Stat | Value |
-|---|---|
-| Unique entities (nodes) | 127,994 |
-| Co-occurrence edges | 4,299,650 |
-| Avg entities per article | 19.3 |
-| Entity types | PERSON, ORG, GPE, DATE, EVENT |
+| Stat                     | Value                         |
+| ------------------------ | ----------------------------- |
+| Unique entities (nodes)  | 127,994                       |
+| Co-occurrence edges      | 4,299,650                     |
+| Avg entities per article | 19.3                          |
+| Entity types             | PERSON, ORG, GPE, DATE, EVENT |
 
 ---
 
@@ -161,17 +162,18 @@ Article text
 
 ### Prerequisites
 
-| Requirement | Version |
-|---|---|
-| Python | 3.10+ |
-| Node.js | 18+ |
-| pip | any recent |
+| Requirement | Version    |
+| ----------- | ---------- |
+| Python      | 3.10+      |
+| Node.js     | 18+        |
+| pip         | any recent |
 
 ### Git LFS (required for knowledge graph)
 
 The knowledge graph file is tracked via Git LFS. Make sure Git LFS is installed before cloning/pulling.
 
 **Install and enable Git LFS:**
+
 ```bash
 # Linux (Debian/Ubuntu)
 sudo apt-get install git-lfs
@@ -187,16 +189,18 @@ git lfs install
 ```
 
 **Clone and fetch LFS objects:**
+
 ```bash
 # USE ONLY ONE FROM THESE TWO
-git clone https://github.com/Kanika-Sharma205/fake-news-detection-using-nlp.git # via HTTP
-git clone git@github.com:Kanika-Sharma205/fake-news-detection-using-nlp.git # via SSH      
+git clone https://github.com/AkshatRauthan/fake-news-detection-using-nlp.git # via HTTP
+git clone git@github.com:AkshatRauthan/fake-news-detection-using-nlp.git # via SSH
 
 cd fake-news-detection-using-nlp
 git lfs pull
 ```
 
 **If you already cloned without LFS:**
+
 ```bash
 git lfs install
 git lfs pull
@@ -207,13 +211,15 @@ git lfs pull
 Run all cells in [`training/notebooks/Fake_News_Detection.ipynb`](training/notebooks/Fake_News_Detection.ipynb).
 
 This trains both models and saves to `models/`:
+
 - `tfidf_vectorizer.pkl`
 - `pac_graph_model.pkl`
-- `knowledge_graph.pkl` *(~112 MB — takes ~5 min to build)*
+- `knowledge_graph.pkl` _(~112 MB — takes ~5 min to build)_
 
 It also auto-exports real run metrics to `backend/metrics/model_metrics.json`.
 
 > **Kaggle dataset setup** (one-time):
+>
 > ```bash
 > mkdir -p ~/.kaggle
 > cp ~/Downloads/kaggle.json ~/.kaggle/
@@ -232,11 +238,13 @@ python -m spacy download en_core_web_sm
 ### Step 3 — Run everything
 
 **Linux / macOS — single command:**
+
 ```bash
 bash run-linux.sh
 ```
 
 **Windows — single command:**
+
 ```
 run-windows.bat
 ```
@@ -260,11 +268,13 @@ bash frontend/start.sh            # Windows: frontend\start.bat
 This repo includes a ready-to-use Dockerfile for Hugging Face Spaces. It builds the frontend and serves it from FastAPI.
 
 **Steps:**
+
 1. Push this repo to GitHub (Git LFS enabled for `models/knowledge_graph.pkl`).
 2. Create a new Space → choose **Docker**.
 3. Connect your GitHub repo and let the Space build.
 
 **Notes:**
+
 - Free tier sleeps when idle (cold start is normal).
 - The API and UI are served from the same URL.
 
@@ -281,9 +291,9 @@ Returns server + model status.
 
 ```json
 {
-  "status": "ok",
-  "models_loaded": true,
-  "model_type": "TF-IDF + Knowledge Graph + Passive Aggressive Classifier"
+    "status": "ok",
+    "models_loaded": true,
+    "model_type": "TF-IDF + Knowledge Graph + Passive Aggressive Classifier"
 }
 ```
 
@@ -299,18 +309,19 @@ Returns the full metrics JSON from the last training run — accuracy, F1, confu
 
 Returns a random article from the dataset. Every call returns a different article.
 
-| param `type` | Source |
-|---|---|
-| `real` | Random row from `True.csv` |
-| `fake` | Random row from `Fake.csv` |
-| `random` | Random from either file |
+| param `type` | Source                     |
+| ------------ | -------------------------- |
+| `real`       | Random row from `True.csv` |
+| `fake`       | Random row from `Fake.csv` |
+| `random`     | Random from either file    |
 
 **Response:**
+
 ```json
 {
-  "headline": "Federal Reserve holds rates steady amid cooling inflation",
-  "content":  "WASHINGTON (Reuters) — The Federal Reserve...",
-  "label":    "real"
+    "headline": "Federal Reserve holds rates steady amid cooling inflation",
+    "content": "WASHINGTON (Reuters) — The Federal Reserve...",
+    "label": "real"
 }
 ```
 
@@ -321,27 +332,29 @@ Returns a random article from the dataset. Every call returns a different articl
 Classifies an article as real or fake.
 
 **Request:**
+
 ```json
 {
-  "text": "Federal Reserve holds rates steady... WASHINGTON (Reuters)..."
+    "text": "Federal Reserve holds rates steady... WASHINGTON (Reuters)..."
 }
 ```
 
 **Response:**
+
 ```json
 {
-  "label":    "REAL NEWS",
-  "is_fake":  false,
-  "confidence": 0.9934,
-  "entities_detected": ["federal reserve", "washington", "reuters", "u.s."],
-  "graph_features": {
-    "num_entities": 4,
-    "num_edges":    6,
-    "avg_degree":   3.0,
-    "density":      0.5,
-    "fake_ratio":   0.14
-  },
-  "message": "This article appears to be legitimate news."
+    "label": "REAL NEWS",
+    "is_fake": false,
+    "confidence": 0.9934,
+    "entities_detected": ["federal reserve", "washington", "reuters", "u.s."],
+    "graph_features": {
+        "num_entities": 4,
+        "num_edges": 6,
+        "avg_degree": 3.0,
+        "density": 0.5,
+        "fake_ratio": 0.14
+    },
+    "message": "This article appears to be legitimate news."
 }
 ```
 
@@ -351,38 +364,40 @@ Classifies an article as real or fake.
 
 ## Website Sections
 
-| Section | Description |
-|---|---|
-| **Hero** | Tagline, key stats (44K articles, 99.48% accuracy, 128K graph entities), CTAs |
-| **Problem Statement** | Why fake news is a critical problem — stats, spread speed, economic damage |
-| **Our Approach** | 6-step pipeline cards explaining every stage of the model |
-| **Model Performance** | Side-by-side bar chart, radar charts, confusion matrices, entity fake-ratio bars, training PNGs |
-| **Try It** | Two-field form (headline + body), 🟢 Real / 🔴 Fake / 🎲 Random testcase buttons, live result card with graph features and detected entities |
+| Section               | Description                                                                                                                                  |
+| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Hero**              | Tagline, key stats (44K articles, 99.48% accuracy, 128K graph entities), CTAs                                                                |
+| **Problem Statement** | Why fake news is a critical problem — stats, spread speed, economic damage                                                                   |
+| **Our Approach**      | 6-step pipeline cards explaining every stage of the model                                                                                    |
+| **Model Performance** | Side-by-side bar chart, radar charts, confusion matrices, entity fake-ratio bars, training PNGs                                              |
+| **Try It**            | Two-field form (headline + body), 🟢 Real / 🔴 Fake / 🎲 Random testcase buttons, live result card with graph features and detected entities |
 
 ---
 
 ## Tech Stack
 
 ### Backend
-| Library | Purpose |
-|---|---|
-| FastAPI | REST API framework |
-| scikit-learn | TF-IDF vectorizer + Passive Aggressive Classifier |
-| spaCy (`en_core_web_sm`) | Named Entity Recognition |
-| NetworkX | Knowledge graph construction + feature extraction |
-| SciPy | Sparse matrix feature fusion (`hstack`) |
-| pandas | CSV loading for the sample endpoint |
-| uvicorn | ASGI server |
+
+| Library                  | Purpose                                           |
+| ------------------------ | ------------------------------------------------- |
+| FastAPI                  | REST API framework                                |
+| scikit-learn             | TF-IDF vectorizer + Passive Aggressive Classifier |
+| spaCy (`en_core_web_sm`) | Named Entity Recognition                          |
+| NetworkX                 | Knowledge graph construction + feature extraction |
+| SciPy                    | Sparse matrix feature fusion (`hstack`)           |
+| pandas                   | CSV loading for the sample endpoint               |
+| uvicorn                  | ASGI server                                       |
 
 ### Frontend
-| Library | Purpose |
-|---|---|
-| React 18 | UI framework |
-| Vite | Build tool + dev server |
-| TypeScript | Type safety |
-| Tailwind CSS | Styling |
-| Recharts | Bar charts, radar charts |
-| Inter (Google Fonts) | Typography |
+
+| Library              | Purpose                  |
+| -------------------- | ------------------------ |
+| React 18             | UI framework             |
+| Vite                 | Build tool + dev server  |
+| TypeScript           | Type safety              |
+| Tailwind CSS         | Styling                  |
+| Recharts             | Bar charts, radar charts |
+| Inter (Google Fonts) | Typography               |
 
 ---
 
@@ -399,11 +414,12 @@ Classifies an article as real or fake.
 
 ## Changelog
 
-### v0 — Initial Release *(May 2026)*
+### v0 — Initial Release _(May 2026)_
 
 **FakeGuard AI v0 is the first complete, fully working version of the project.**
 
 #### ML Pipeline
+
 - Trained on **44,898 labeled news articles** (23,481 fake · 21,417 real) from the Kaggle Fake and Real News dataset
 - **Text-Only PAC** baseline: TF-IDF (50,000 vocabulary) + Passive Aggressive Classifier → **99.48% accuracy**
 - **Graph-Enhanced PAC** (deployed): TF-IDF + 5 knowledge graph structural features → **95.91% accuracy**
@@ -413,6 +429,7 @@ Classifies an article as real or fake.
 - Feature fusion using **SciPy sparse `hstack`** (50,000 TF-IDF + 5 graph = 50,005 total)
 
 #### Backend (FastAPI)
+
 - `POST /api/predict` — full inference pipeline with confidence score and graph feature breakdown
 - `POST /api/debug` — raw decision score, class metadata, and SHA-256 model file fingerprints
 - `GET /api/sample?type=real|fake|random` — pulls live articles from `Fake.csv` / `True.csv`
@@ -420,6 +437,7 @@ Classifies an article as real or fake.
 - `GET /api/health` — model load status
 
 #### Frontend (React + Vite + Tailwind)
+
 - **Hero** section with live stats (44K articles, 128K graph nodes, model accuracy)
 - **Problem Statement** — why fake news detection matters
 - **Model Approach** — 6-step pipeline walkthrough
@@ -427,12 +445,14 @@ Classifies an article as real or fake.
 - **Live Predictor** — headline + body input, 🟢 Real / 🔴 Fake / 🎲 Random buttons, result card with detected entities and graph feature breakdown
 
 #### Deployment & Tooling
+
 - Deployed on **Hugging Face Spaces** (Docker, free tier) — FastAPI serves the built frontend as static files
 - GitHub Actions workflow: **auto-push to HuggingFace** on every push to `main`
 - GitHub Actions cron job: **daily ping** to keep the HF Space from going to sleep
 - `run-linux.sh` / `run-windows.bat` — one-command local startup (auto-detects venv, frees port 8000, starts both servers with colour-coded logs)
 
 #### Bug Fixes (caught and resolved during v0)
+
 - **Entity extraction mismatch** — backend was producing 2–3× more entities than training (no deduplication, no `len > 2` filter). Fixed to exactly match the notebook's `extract_entities_from_doc`: set-deduplication + `.strip()` + length filter. This was causing highly confident wrong predictions (e.g. FAKE articles predicted as REAL NEWS with 100% confidence).
 - **`num_entities` off-by-definition** — was counting all spaCy-detected entities instead of only those present in the knowledge graph. Fixed to count only graph-matched entities, matching training-time `len(valid)`.
 - **Terminal log colour escape codes** — `run-linux.sh` used single-quoted `'\033[...]'` strings which bash treats as literals. Fixed to `$'\033[...]'` so ANSI colours render correctly.
@@ -443,5 +463,5 @@ Classifies an article as real or fake.
 <div align="center">
   <img src="frontend/public/logo.svg" alt="FakeGuard AI" width="48" />
   <br/>
-  <h2>Made with  ❤️  by <strong>KANIKA SHARMA</strong></h2>
+  <h2>Made with  ❤️  by <strong>AKSHAT RAUTHAN</strong></h2>
 </div>

@@ -38,7 +38,7 @@ export default function Footer() {
 
         <div className="border-t border-white/5 pt-6 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-slate-600 text-sm">
-            Built by <span className="text-slate-400">Kanika Sharma</span>
+            Built by <span className="text-slate-400">Akshat Rauthan</span>
           </p>
           <p className="text-slate-700 text-xs">
             For educational purposes · Not a substitute for professional fact-checking
